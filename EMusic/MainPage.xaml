@@ -65,7 +65,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Background="#383838">
-                <Button Name="toHome" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE10F;"  VerticalAlignment="Stretch" Background="#00FFFFFF " BorderThickness="0" Foreground="Azure" FontSize="20" Click="toHome_Click"></Button>
+                <Button Name="toHome" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE10F;" VerticalAlignment="Stretch" Background="#00FFFFFF " BorderThickness="0" Foreground="Azure" FontSize="20" Click="toHome_Click"></Button>
             </Grid>
             <Button Name="toList" Grid.Row="1" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE175;"  VerticalAlignment="Stretch" Background="#00FFFFFF " BorderThickness="0" Foreground="Azure" FontSize="20" Click="toList_Click"></Button>
             <Button Name="toSearch" Grid.Row="2" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE1A3;" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20" Click="toSearch_Click"></Button>
