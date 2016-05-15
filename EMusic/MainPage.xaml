@@ -1,0 +1,575 @@
+﻿<Page
+    x:Class="EMusic.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:EMusic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid Background="White">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="VisualState000">
+                    <VisualState.Setters>
+                        <Setter Target="detailGrid.(Grid.Column)" Value="1"/>
+                        <Setter Target="detailGrid.Visibility" Value="Collapsed" />
+                        <Setter Target="two.Width" Value="*" />
+                        <Setter Target="three.Width" Value="0" />
+                        <Setter Target="Bigimg.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualState001">
+                    <VisualState.Setters>
+                        <Setter Target="detailGrid.(Grid.Column)" Value="1"/>
+                        <Setter Target="two.Width" Value="*" />
+                        <Setter Target="three.Width" Value="0" />
+                        <Setter Target="Bigimg.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualState600">
+                    <VisualState.Setters>
+                        <Setter Target="detailGrid.Visibility" Value="Visible" />
+                        <Setter Target="two.Width" Value="450" />
+                        <Setter Target="detailGrid.(Grid.Column)" Value="2"/>
+                        <Setter Target="three.Width" Value="*" />
+                        <Setter Target="Bigimg.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualState800">
+                    <VisualState.Setters>
+                        <Setter Target="detailGrid.Visibility" Value="Visible" />
+                        <Setter Target="two.Width" Value="450" />
+                        <Setter Target="detailGrid.(Grid.Column)" Value="2"/>
+                        <Setter Target="Bigimg.Visibility" Value="Visible"/>
+                        <Setter Target="three.Width" Value="*" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition x:Name="two"/>
+            <ColumnDefinition x:Name="three"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="48"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--<Frame x:Name="searchFrame" Grid.Column="1" Grid.Row="1"></Frame>-->
+        <Grid Name="buttomGrid" Background="#585858">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="#383838">
+                <Button Name="toHome" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE10F;"  VerticalAlignment="Stretch" Background="#00FFFFFF " BorderThickness="0" Foreground="Azure" FontSize="20" Click="toHome_Click"></Button>
+            </Grid>
+            <Button Name="toList" Grid.Row="1" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE175;"  VerticalAlignment="Stretch" Background="#00FFFFFF " BorderThickness="0" Foreground="Azure" FontSize="20" Click="toList_Click"></Button>
+            <Button Name="toSearch" Grid.Row="2" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE1A3;" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20" Click="toSearch_Click"></Button>
+            <Button Name="toLove" Grid.Row="3" HorizontalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE1CE;" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20" Click="toLove_Click"></Button>
+        </Grid>
+        <Grid Name="firstGrid" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="#424242" Height="48">
+                <TextBlock Text="首页" FontSize="18" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"></TextBlock>
+            </Grid>
+            <Image Grid.Row="1" Source="Assets/back.png"></Image>
+            <Grid Grid.Row="1" Background="#068CFD" Opacity="0.38">
+            </Grid>
+        </Grid>
+        <Grid Name="listGrid" Grid.Column="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="#424242" Height="48">
+                <TextBlock Text="榜单" FontSize="18" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"></TextBlock>
+            </Grid>
+            <Grid Grid.Row="1" Background="#068CFD" Opacity="0.38"></Grid>
+            <Pivot Grid.Row="1">
+            <PivotItem Loaded="PivotItem_Loaded">
+                <PivotItem.Header>
+                    <TextBlock Text="销量" FontSize="16" Foreground="#333"/>
+                </PivotItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <ListView Name="bestListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Rectangle Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                            <Rectangle.Fill>
+                                                <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <Rectangle Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                            <Rectangle.Fill>
+                                                <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <TextBlock Name="state1" Text="啊哦！出不来or木有了呢" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Loaded="PivotItem_Loaded_1" >
+                <PivotItem.Header>
+                    <TextBlock Text="热歌" FontSize="16" Foreground="#333"/>
+                </PivotItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <ListView Name="hotListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                        <TextBlock Name="state2" Text="啊哦！出不来or木有了呢" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Loaded="PivotItem_Loaded_2">
+                <PivotItem.Header>
+                    <TextBlock Text="内地" FontSize="16" Foreground="#333"/>
+                </PivotItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                    <ListView Name="chListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                        <TextBlock Name="state3" Text="啊哦！出不来or木有了呢" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Loaded="PivotItem_Loaded_3">
+                <PivotItem.Header>
+                    <TextBlock Text="港台" FontSize="16" Foreground="#333"/>
+                </PivotItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <ListView Name="hkListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                            <TextBlock Name="state4" Text="啊哦！出不来or木有了呢" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Loaded="PivotItem_Loaded_4">
+                <PivotItem.Header>
+                    <TextBlock Text="欧美" FontSize="16" Foreground="#333"/>
+                </PivotItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                    <ListView Name="amListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                        <TextBlock Name="state5" Text="啊哦！出不来or木有了呢" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Loaded="PivotItem_Loaded_5">
+                <PivotItem.Header>
+                    <TextBlock Text="韩国" FontSize="16" Foreground="#333"/>
+                </PivotItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <ListView Name="hgListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                            <TextBlock Name="state6" Text="啊哦！出不来or木有了呢" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Loaded="PivotItem_Loaded_6">
+                <PivotItem.Header>
+                    <TextBlock Text="日本" FontSize="16" Foreground="#333"/>
+                </PivotItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                    <ListView Name="jpListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle  Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                        <Rectangle.Fill>
+                                            <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                            <TextBlock Name="state7" Text="啊哦！出不来or木有了呢" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+        </Grid>
+        <Grid Name="searchGrid" Grid.Column="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="#424242" Height="48">
+                <TextBlock Text="搜索" FontSize="18" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"></TextBlock>
+            </Grid>
+            <Grid Grid.Row="1" Background="#068CFD" Opacity="0.38"></Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="48"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox Name="input" Margin="10,8" BorderThickness="1"></TextBox>
+                <Button Name="searchBtm" Grid.Column="1" FontFamily="Segoe MDL2 Assets" Content="&#xE1A3;" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="#333" FontSize="20" Margin="0,8" Click="searchBtm_Click"></Button>
+                <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <ListView Name="searchListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Rectangle Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                            <Rectangle.Fill>
+                                                <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <Rectangle Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                            <Rectangle.Fill>
+                                                <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Grid Tapped="Grid_Tapped">
+                            <TextBlock Name="state8" Text="啊哦！没输入or木有了呢，点我加载下一页~" TextWrapping="Wrap" Foreground="#666" HorizontalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <Grid Name="loveGrid" Grid.Column="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="#424242" Height="48">
+                <TextBlock Text="收藏" FontSize="18" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"></TextBlock>
+            </Grid>
+            <Grid Grid.Row="1" Background="#068CFD" Opacity="0.38"></Grid>
+            <StackPanel Grid.Row="1" Margin="10">
+                <ListView Name="loveListView" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Rectangle Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="Assets/unfind.jpg"></ImageBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <Rectangle Grid.RowSpan="3" RadiusX="25" RadiusY="25" Height="40" Width="40" Margin="0,0,10,0">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="{Binding albumpic_small}"></ImageBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <TextBlock Grid.Column="1" Grid.RowSpan="2" Text="{Binding songname}" FontSize="13" VerticalAlignment="Top"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding singername}" FontSize="10"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <Button Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"  Background="#00FFFFFF " FontFamily="Segoe MDL2 Assets" Content="&#xE107;"  BorderThickness="0" Foreground="#333" FontSize="20" Width="48" Height="48" Click="clear_Click"></Button>
+        </Grid>
+        <Grid Name="detailGrid" Grid.Column="2" Visibility="Collapsed" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Background="#424242" Height="48">
+                <Button HorizontalAlignment="Right" VerticalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE118;" Width="48" Click="saveMusic" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20"></Button>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE109;" Width="48" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20" Margin="0,0,48,0" Click="addLove_Click"></Button>
+            </Grid>
+            <Image Grid.Row="1" Source="Assets/Rback.jpg"></Image>
+            <Grid Grid.Row="1" Background="#068CFD" Opacity="0.32"/>
+            <Grid Grid.Row="1" Background="White" Opacity="0.32"/>
+            <Grid Grid.RowSpan="2" Name="detail" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="歌曲详情" FontSize="18" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                <ScrollViewer Grid.Row="1">
+                <StackPanel>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" Margin="0,30,0,0">
+                        <Grid Name="Bigimg"></Grid>
+                        <Image Name="none" Visibility="Collapsed" Source="Assets/logo.jpg"></Image>
+                    </Grid>
+                    <Grid Margin="20,30,20,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Name="songName" Foreground="#333" FontSize="16" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Name="singerName" Foreground="#333" Grid.Row="1" FontSize="13" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    </Grid>
+                    <ScrollViewer Margin="20,30,20,15" VerticalScrollBarVisibility="Hidden" Height="275">
+                        <Grid>
+                        <TextBlock Name="lyric" Foreground="#333" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"></TextBlock>
+                        </Grid>
+                    </ScrollViewer>
+                </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <MediaElement Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="mediaElement1" AreTransportControlsEnabled="True" AutoPlay="False">
+            <MediaElement.TransportControls >
+                <MediaTransportControls Name="mediactrol" IsZoomButtonVisible="False" IsZoomEnabled="False" IsPlaybackRateButtonVisible="True" IsPlaybackRateEnabled="True" IsFullWindowButtonVisible="False" IsFullWindowEnabled="False" IsEnabled="False" IsCompact="True"/>
+            </MediaElement.TransportControls>
+        </MediaElement>
+        <Grid Name="im" Grid.Row="1">
+            <Image Grid.Row="1" Source="Assets/logo.jpg"></Image>
+        </Grid>
+    </Grid>
+</Page>
