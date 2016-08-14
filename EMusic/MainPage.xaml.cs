@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using SQLite;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,6 +37,7 @@ namespace EMusic
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public static SQLiteAsyncConnection db { get; set; }
         public MainPage()
         {
             this.InitializeComponent();
@@ -44,7 +45,7 @@ namespace EMusic
             {
                 var state = "VisualState000";
                 size = 0;
-                if(on==1)
+                if (on == 1)
                     state = "VisualState001";
                 if (e.NewSize.Width > 600 && e.NewSize.Width <= 800)
                 {
@@ -63,6 +64,7 @@ namespace EMusic
             view.TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 88, 88, 88);
             view.TitleBar.ButtonHoverBackgroundColor = Color.FromArgb(255, 88, 88, 88);
             view.TitleBar.ButtonPressedBackgroundColor = Color.FromArgb(255, 66, 66, 66);
+            db = new SQLiteAsyncConnection("Love.db");
         }
         //protected override void OnNavigatedTo(NavigationEventArgs e)
         //{
@@ -78,32 +80,8 @@ namespace EMusic
         public int next = 0;
         public int size = 0;
         public int on = 0;
-        public class Album
-        {
-            public string albumid { get; set; }
-            public string albumpic_big { get; set; }
-            public string albumpic_small { get; set; }
-            public string downUrl { get; set; }
-            public string singername { get; set; }
-            public string songname { get; set; }
-            public string url { get; set; }
-            public string songid { get; set; }
-            public string m4a { get; set; }
-            public Album()
-            {
-                albumid = "";
-                albumpic_big = "";
-                albumpic_small = "";
-                downUrl = "";
-                singername = "";
-                songname = "";
-                url = "";
-                songid = "";
-                m4a = "";
-            }
-        }
-        public Album chooseitem = new Album();
-        ObservableCollection<Album> Like = new ObservableCollection<Album>();
+        public LoveModel chooseitem = new LoveModel();
+        ObservableCollection<LoveModel> Like = new ObservableCollection<LoveModel>();
         //private static String DB_NAME = "Love.db";
         //private static String TABLE_NAME = "Song";
         //private static String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (id text,song text);";
@@ -186,7 +164,7 @@ namespace EMusic
             });
         }
 
-        ObservableCollection<Album> list = new ObservableCollection<Album>();
+        ObservableCollection<LoveModel> list = new ObservableCollection<LoveModel>();
         private async void PivotItem_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -202,7 +180,7 @@ namespace EMusic
                     string json2 = result["pagebean"].ToString();
                     JObject pa = JObject.Parse(json2);
                     string json3 = pa["songlist"].ToString();
-                    list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                    list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                     bestListView.ItemsSource = list;
                 }
             }
@@ -215,7 +193,7 @@ namespace EMusic
         private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             on = 1;
-            chooseitem = (Album)e.ClickedItem;
+            chooseitem = (LoveModel)e.ClickedItem;
             if (chooseitem.url == "")
                 mediaElement1.Source = new Uri(chooseitem.m4a);
             else
@@ -261,7 +239,7 @@ namespace EMusic
                     string json2 = result["pagebean"].ToString();
                     JObject pa = JObject.Parse(json2);
                     string json3 = pa["songlist"].ToString();
-                    list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                    list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                     hotListView.ItemsSource = list;
                 }
             }
@@ -287,7 +265,7 @@ namespace EMusic
                     string json2 = result["pagebean"].ToString();
                     JObject pa = JObject.Parse(json2);
                     string json3 = pa["songlist"].ToString();
-                    list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                    list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                     chListView.ItemsSource = list;
                 }
             }
@@ -313,7 +291,7 @@ namespace EMusic
                     string json2 = result["pagebean"].ToString();
                     JObject pa = JObject.Parse(json2);
                     string json3 = pa["songlist"].ToString();
-                    list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                    list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                     hkListView.ItemsSource = list;
                 }
             }
@@ -339,7 +317,7 @@ namespace EMusic
                     string json2 = result["pagebean"].ToString();
                     JObject pa = JObject.Parse(json2);
                     string json3 = pa["songlist"].ToString();
-                    list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                    list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                     amListView.ItemsSource = list;
                 }
             }
@@ -365,7 +343,7 @@ namespace EMusic
                     string json2 = result["pagebean"].ToString();
                     JObject pa = JObject.Parse(json2);
                     string json3 = pa["songlist"].ToString();
-                    list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                    list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                     hgListView.ItemsSource = list;
                 }
             }
@@ -391,7 +369,7 @@ namespace EMusic
                     string json2 = result["pagebean"].ToString();
                     JObject pa = JObject.Parse(json2);
                     string json3 = pa["songlist"].ToString();
-                    list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                    list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                     jpListView.ItemsSource = list;
                 }
             }
@@ -447,13 +425,17 @@ namespace EMusic
                 clickbase();
             }
         }
-        private void toLove_Click(object sender, RoutedEventArgs e)
+        private async void toLove_Click(object sender, RoutedEventArgs e)
         {
             if (page != 3)
             {
                 page = 3;
                 clickbase();
             }
+            await db.CreateTableAsync<LoveModel>();
+            var query = await (db.Table<LoveModel>().Where(v => v._Id >= 1)).ToListAsync();
+            Like = new ObservableCollection<LoveModel>(query);
+            loveListView.ItemsSource = Like;
         }
 
         private async void searchBtm_Click(object sender, RoutedEventArgs e)
@@ -474,7 +456,7 @@ namespace EMusic
                         string json2 = result["pagebean"].ToString();
                         JObject pa = JObject.Parse(json2);
                         string json3 = pa["contentlist"].ToString();
-                        list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                        list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                         searchListView.ItemsSource = list;
                     }
                 }
@@ -497,24 +479,35 @@ namespace EMusic
                 Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
                 if (file != null)
                 {
-                    byte[] bytes = await client.GetByteArrayAsync(chooseitem.downUrl);
-                    Windows.Storage.CachedFileManager.DeferUpdates(file);
-                    await Windows.Storage.FileIO.WriteBytesAsync(file, bytes);
-                    Windows.Storage.Provider.FileUpdateStatus status =
-                        await Windows.Storage.CachedFileManager.CompleteUpdatesAsync(file);
-                    if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
+                    try
                     {
-                        XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
-                        XmlNodeList elements = toastXml.GetElementsByTagName("text");
-                        elements[0].AppendChild(toastXml.CreateTextNode("《" + file.Name + "》已经下载好啦！"));
-                        ToastNotification toast = new ToastNotification(toastXml);
-                        ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        byte[] bytes = await client.GetByteArrayAsync(chooseitem.downUrl);
+                        Windows.Storage.CachedFileManager.DeferUpdates(file);
+                        await Windows.Storage.FileIO.WriteBytesAsync(file, bytes);
+                        Windows.Storage.Provider.FileUpdateStatus status =
+                            await Windows.Storage.CachedFileManager.CompleteUpdatesAsync(file);
+                        if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
+                        {
+                            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+                            XmlNodeList elements = toastXml.GetElementsByTagName("text");
+                            elements[0].AppendChild(toastXml.CreateTextNode("《" + file.Name + "》已经下载好啦！"));
+                            ToastNotification toast = new ToastNotification(toastXml);
+                            ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        }
+                        else
+                        {
+                            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+                            XmlNodeList elements = toastXml.GetElementsByTagName("text");
+                            elements[0].AppendChild(toastXml.CreateTextNode("《" + file.Name + "》并没有下载呢"));
+                            ToastNotification toast = new ToastNotification(toastXml);
+                            ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        }
                     }
-                    else
+                    catch
                     {
                         XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
                         XmlNodeList elements = toastXml.GetElementsByTagName("text");
-                        elements[0].AppendChild(toastXml.CreateTextNode("《" + file.Name + "》并没有下载呢"));
+                        elements[0].AppendChild(toastXml.CreateTextNode("并没有下载呢，请重试"));
                         ToastNotification toast = new ToastNotification(toastXml);
                         ToastNotificationManager.CreateToastNotifier().Show(toast);
                     }
@@ -561,7 +554,7 @@ namespace EMusic
                         //    newli = list.Concat(JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3)).ToList<Album>();
                         //else
                         //    newli.AddRange(JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3));
-                        list = JsonConvert.DeserializeObject<ObservableCollection<Album>>(json3);
+                        list = JsonConvert.DeserializeObject<ObservableCollection<LoveModel>>(json3);
                         searchListView.ItemsSource = list;
                     }
                 }
@@ -585,8 +578,8 @@ namespace EMusic
                     JObject result = JObject.Parse(json1);
                     string json2 = result["lyric_txt"].ToString();
                     json2 = json2.Replace(" ", "\n");
-                    for(int i=0;i<12; i++)
-                    json2 = json2.Replace("\n\n", "\n");
+                    for (int i = 0; i < 12; i++)
+                        json2 = json2.Replace("\n\n", "\n");
                     lyric.Text = json2;
                 }
             }
@@ -602,12 +595,13 @@ namespace EMusic
             on = 0;
             if (size == 0)
                 detailGrid.Visibility = Visibility.Collapsed;
-            chooseitem = new Album();
+            chooseitem = new LoveModel();
             e.Handled = true;
         }
 
-        private void addLove_Click(object sender, RoutedEventArgs e)
+        private async void addLove_Click(object sender, RoutedEventArgs e)
         {
+            await db.CreateTableAsync<LoveModel>();
             if (chooseitem.songid != "")
             {
                 //CREATETable();
@@ -615,6 +609,8 @@ namespace EMusic
                 if (Like.Where(x => x == chooseitem).Count() == 0)
                 {
                     Like.Add(chooseitem);
+                    LoveModel love = new LoveModel { albumid = chooseitem.albumid, albumpic_big = chooseitem.albumpic_big, albumpic_small = chooseitem.albumpic_small, downUrl = chooseitem.downUrl, singername = chooseitem.singername, songname = chooseitem.songname, url = chooseitem.url, songid = chooseitem.songid, m4a = chooseitem.m4a };
+                    await db.InsertAsync(love);
                     loveListView.ItemsSource = Like;
                     XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
                     XmlNodeList elements = toastXml.GetElementsByTagName("text");
@@ -641,7 +637,7 @@ namespace EMusic
             }
         }
 
-        private void clear_Click(object sender, RoutedEventArgs e)
+        private async void clear_Click(object sender, RoutedEventArgs e)
         {
             if (Like.Count() == 0)
             {
@@ -653,6 +649,9 @@ namespace EMusic
             }
             else
             {
+                var query = await(db.Table<LoveModel>().Where(v => v._Id >= 1)).ToListAsync();
+                for(int n=0;n< query.Count; n++)
+                await db.DeleteAsync(query[n]);
                 Like.Clear();
                 XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
                 XmlNodeList elements = toastXml.GetElementsByTagName("text");
@@ -661,6 +660,33 @@ namespace EMusic
                 ToastNotificationManager.CreateToastNotifier().Show(toast);
             }
         }
+    }
+}
+public class LoveModel
+{
+    [PrimaryKey, AutoIncrement]
+    public int _Id { get; set; }
+    public string albumid { get; set; }
+    public string albumpic_big { get; set; }
+    public string albumpic_small { get; set; }
+    public string downUrl { get; set; }
+    public string singername { get; set; }
+    public string songname { get; set; }
+    public string url { get; set; }
+    public string songid { get; set; }
+    public string m4a { get; set; }
+    public LoveModel()
+    {
+        _Id = 0;
+        albumid = "";
+        albumpic_big = "";
+        albumpic_small = "";
+        downUrl = "";
+        singername = "";
+        songname = "";
+        url = "";
+        songid = "";
+        m4a = "";
     }
 }
 public static class trans

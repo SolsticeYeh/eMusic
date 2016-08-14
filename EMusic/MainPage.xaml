@@ -528,8 +528,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid Background="#424242" Height="48">
-                <Button HorizontalAlignment="Right" VerticalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE118;" Width="48" Click="saveMusic" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20"></Button>
-                <Button HorizontalAlignment="Right" VerticalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE109;" Width="48" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20" Margin="0,0,48,0" Click="addLove_Click"></Button>
+                <!--<Button HorizontalAlignment="Right" VerticalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE118;" Width="48" Click="saveMusic" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20"></Button>-->
+                <Button HorizontalAlignment="Right" VerticalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE109;" Width="48" BorderThickness="0" Background="Transparent" Foreground="Azure" FontSize="20" Margin="0,0,0,0" Click="addLove_Click"></Button>
             </Grid>
             <Image Grid.Row="1" Source="Assets/Rback.jpg"></Image>
             <Grid Grid.Row="1" Background="#068CFD" Opacity="0.32"/>
